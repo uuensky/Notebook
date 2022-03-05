@@ -8,12 +8,15 @@
   },
   "scripts": {
     "serve": "gitbook serve",
-    "build": "gitbook build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "gitbook build ./docs ./gh-pages",
+    "start": "gitbook serve ./docs ./gh-pages",
+    "deploy": "node ./scripts/deploy-gh-pages.js",
+    "publish": "npm run build&&npm run deploy"
   },
   "author": "uuensky",
   "license": "ISC",
   "dependencies": {
+    "gh-pages": "^3.2.3",
     "gitbook-plugin-back-to-top-button": "^0.1.4",
     "gitbook-plugin-code": "^0.1.0",
     "gitbook-plugin-expandable-chapters": "^0.2.0",
