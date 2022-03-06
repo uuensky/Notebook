@@ -17,7 +17,6 @@ objc
 
 ## 三、Ruby
 
-ruby
 
 ## 四、Python
 

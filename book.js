@@ -25,7 +25,7 @@ module.exports = {
         "hide-element",
         "-sharing",
         "sitemap",
-        "theme-lou",
+        "theme-lou"
     ],
 
     "pluginsConfig": {
@@ -88,15 +88,15 @@ module.exports = {
             ],
             // 底部打赏配置
             "footer": {
-              "donate": {
-                "button": "捐赠", // 打赏按钮
-                "avatar": "https://头像地址", // 头像地址
-                "nickname": "uuensky", // 昵称
-                "message": "随意打赏，但不要超过一顿早餐钱！", // 打赏消息文本
-                "text": "『 赠人玫瑰 🌹 手有余香 』", // 打赏话语
-                "wxpay": "你的微信收款码地址", // 微信收款码
-                "alipay": "你的支付宝收款码地址" // 支付宝收款码
-              },
+            //   "donate": {
+            //     "button": "捐赠", // 打赏按钮
+            //     "avatar": "https://头像地址", // 头像地址
+            //     "nickname": "uuensky", // 昵称
+            //     "message": "随意打赏，但不要超过一顿早餐钱！", // 打赏消息文本
+            //     "text": "『 赠人玫瑰 🌹 手有余香 』", // 打赏话语
+            //     "wxpay": "你的微信收款码地址", // 微信收款码
+            //     "alipay": "你的支付宝收款码地址" // 支付宝收款码
+            //   },
               "copyright": true // 是否显示版权
             }
           }
