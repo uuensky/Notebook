@@ -1,0 +1,248 @@
+# Ruby Gems 制作、打包测试、发布
+
+## 一、制作
+
+## 关于GEM的搜索`search`、安装`install`、卸载`uninstall`、查看已安装`list`等操作，可以查看官方文档[ruby-gems-basics](https://guides.rubygems.org/rubygems-basics/)。
+
+### `list` 操作
+
+- 终端输入`gem list`，查看所有已安装的gems。
+
+```
+➜  ~ gem list
+
+*** LOCAL GEMS ***
+
+abbrev (default: 0.1.0)
+activesupport (6.1.4.1)
+addressable (2.8.0)
+algoliasearch (1.27.5)
+```
+
+- 终端输入`gem list -d`，查看所有已安装的gems（带有更多详情信息）。
+
+```
+➜  ~ gem list -d
+zlib (1.1.0)
+    Authors: Yukihiro Matsumoto, UENO Katsuhiro
+    Homepage: https://github.com/ruby/zlib
+    Licenses: Ruby, BSD-2-Clause
+    Installed at (default): /Users/uuen/.rvm/rubies/ruby-3.0.0/lib/ruby/gems/3.0.0
+
+    Ruby interface for the zlib compression/decompression library
+
+zy_crawler (0.0.1)
+    Author: uuen sky
+    Homepage: https://rubygems.org/gems/zycrawler
+    License: MIT
+    Installed at: /Users/uuen/.rvm/gems/ruby-3.0.0
+
+    A yong spider
+```
+
+- 终端输入`gem list GEM_NAME -d` ，查看指定GEM_NAME的详情。
+
+```
+➜  ~ gem list zy_crawler -d
+
+*** LOCAL GEMS ***
+
+zy_crawler (0.0.1)
+    Author: uuen sky
+    Homepage: https://rubygems.org/gems/zycrawler
+    License: MIT
+    Installed at: /Users/uuen/.rvm/gems/ruby-3.0.0
+
+    A yong spider
+```
+
+更多命令可以`gem list --help`
+
+### `制作gem` 
+
+#### 创建gem目录结构
+
+- ##### bundle（bundler同一个相当于别名） 命令
+
+`bundler gem GEM_NAME`
+
+```
+➜  ~ bundler gem MyDemoGem
+Creating gem 'MyDemoGem'...
+MIT License enabled in config
+Code of conduct enabled in config
+Changelog enabled in config
+Standard enabled in config
+Initializing git repo in /Users/uuen/MyDemoGem
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: is subject to change. To configure the initial branch name to use in all
+hint: of your new repositories, which will suppress this warning, call:
+hint:
+hint: 	git config --global init.defaultBranch <name>
+hint:
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint:
+hint: 	git branch -m <name>
+      create  MyDemoGem/Gemfile
+      create  MyDemoGem/lib/MyDemoGem.rb
+      create  MyDemoGem/lib/MyDemoGem/version.rb
+      create  MyDemoGem/MyDemoGem.gemspec
+      create  MyDemoGem/Rakefile
+      create  MyDemoGem/README.md
+      create  MyDemoGem/bin/console
+      create  MyDemoGem/bin/setup
+      create  MyDemoGem/.gitignore
+      create  MyDemoGem/.rspec
+      create  MyDemoGem/spec/spec_helper.rb
+      create  MyDemoGem/spec/MyDemoGem_spec.rb
+      create  MyDemoGem/LICENSE.txt
+      create  MyDemoGem/CODE_OF_CONDUCT.md
+      create  MyDemoGem/CHANGELOG.md
+      create  MyDemoGem/.standard.yml
+Gem 'MyDemoGem' was successfully created. For more information on making a RubyGem visit https://bundler.io/guides/creating_gem.html
+```
+
+`tree`查看结构
+
+```
+➜  MyDemoGem git:(master) ✗ tree
+.
+├── CHANGELOG.md
+├── CODE_OF_CONDUCT.md
+├── Gemfile
+├── LICENSE.txt
+├── MyDemoGem.gemspec
+├── README.md
+├── Rakefile
+├── bin
+│   ├── console
+│   └── setup
+├── lib
+│   ├── MyDemoGem
+│   │   └── version.rb
+│   └── MyDemoGem.rb
+└── spec
+    ├── MyDemoGem_spec.rb
+    └── spec_helper.rb
+
+4 directories, 13 files
+```
+
+##### 手动
+
+按GEM规范创建目录结构
+
+```
+➜  Crawler git:(master) ✗ tree
+.
+├── CHANGELOG.md
+├── README.md
+├── bin
+│   └── zycrawler
+├── lib
+│   ├── command_line_argument_parser.rb
+│   ├── spider.rb
+│   ├── url_store.rb
+│   ├── url_utils.rb
+│   └── zy_crawler.rb
+├── test
+│   └── urls.txt
+└── zy_crawler.gemspec
+
+3 directories, 10 files
+```
+
+
+
+#### 编写代码
+
+
+
+#### 修改GEM_NAME.gemspec
+
+```
+Gem::Specification.new do |s|
+  s.name        = 'zy_crawler'
+  s.version     = '0.0.1'
+  s.summary     = 'A yong spider' # 对应上面 list -d 最后一行描述信息
+  s.description = 'A simple crawler demo crawler'
+  s.authors     = 'uuen sky'
+  s.email       = 'uuensky@163.com'
+  s.files       = %w(
+                    lib/command_line_argument_parser.rb
+                    lib/spider.rb
+                    lib/url_store.rb
+                    lib/url_utils.rb
+                    lib/zy_crawler.rb
+                    )
+  s.executables = ['zycrawler']
+  s.add_runtime_dependency 'hpricot', '~> 0.8'
+  s.homepage    = 'https://rubygems.org/gems/zy_crawler'
+  s.license     = 'MIT'
+  if s.respond_to?(:metadata=)
+    s.metadata = {
+      "changelog_uri" => "https://github.com/uuensky/zycrawler/blob/master/CHANGELOG.md",
+      "homepage_uri" => "https://rubygems.org/gems/zy_crawler",
+      "source_code_uri" => "https://github.com/uuensky/zycrawler.git",
+    }
+  end
+end
+```
+
+
+
+其中 `bin`目录是可执行文件，通过`gem install` 后在终端可以直接运行，比如 `zycrawler`，具体可查看[源码](https://github.com/uuensky/zycrawler.git)。
+
+## 二、打包测试
+
+### 打包
+
+`gem build GEM_NAME.gemspec`
+
+```
+➜  Crawler git:(master) ✗ gem build zy_crawler.gemspec
+  Successfully built RubyGem
+  Name: zy_crawler
+  Version: 0.0.1
+  File: zy_crawler-0.0.1.gem
+```
+
+`gem install GEM_NAME-VERSION.gem --local`，如上gem install zy_crawler-0.0.1.gem --local
+
+```
+➜  Crawler git:(master) ✗ gem install zy_crawler-0.0.1.gem --local
+Successfully installed zy_crawler-0.0.1
+Parsing documentation for zy_crawler-0.0.1
+Done installing documentation for zy_crawler after 0 seconds
+1 gem installed
+```
+
+### 测试
+
+```
+➜  Crawler git:(master) ✗ zycrawler
+"Sample usage:"
+"ruby zy_crawler.rb -c web -d 3 -p 100 -f 'urls.txt'"
+"-c must be either 'web' or 'domain', will default to 'web' if you type garbage"
+```
+
+```
+➜  Crawler git:(master) ✗ zycrawler -c web -d 2 -p 5 -f ./test/urls.txt
+Crawling url https://stevepavlina.com/
+Unable to open url: http://www.complang.org/ragel/
+Crawling url https://stevepavlina.com/
+Unable to open url: https://stevepavlina.com/javascript:void(0);
+Crawling url https://stevepavlina.com/news/
+Crawling url https://stevepavlina.com/newsletter/
+Crawling url https://stevepavlina.com/courses/
+Crawling url https://stevepavlina.com/amplify/
+Crawling url https://stevepavlina.com/stature/
+```
+
+## 三、发布
+
+1. 注册个人账号。
+2. 终端输入`curl -u [username] https://rubygems.org/api/v1/api_key.yaml > ~/.gem/credentials`	（[username]是个人账号名）
+3. 终端输入`chmod 0600 ~/.gem/credentials`
+4. 终端输入`gem push GEM_NAME_Version.gem` 如 gem push zy_crawler-0.0.1.gem
